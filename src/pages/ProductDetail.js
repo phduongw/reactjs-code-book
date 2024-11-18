@@ -15,7 +15,7 @@ const ProductDetail = () => {
             .then(data => {
                 setProduct(data)
             })
-    }, [])
+    }, [id])
     console.log("Product detail is", product)
 
     return (
