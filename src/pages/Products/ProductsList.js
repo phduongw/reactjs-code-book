@@ -4,11 +4,12 @@ import { ProductCard } from "../../components";
 import FilterBar from "./components/FilterBar";
 import {useLocation} from "react-router-dom";
 import useTitle from "../../hooks/useTitle";
+import {useFilter} from "../../context/FilterContext";
 
 export const ProductsList = () => {
     useTitle("Explore eBooks Collection");
+    const { products, initialProductList } = useFilter();
     const [show, setShow] = useState(false);
-    const [products, setProducts] = useState([]);
     const search = useLocation().search;
     const searchTerm = new URLSearchParams(search).get("q");
 
@@ -19,7 +20,7 @@ export const ProductsList = () => {
         }
 
         fetchProduct().then(data => {
-            setProducts(data);
+            initialProductList(data)
         })
     }, [searchTerm]);
 
