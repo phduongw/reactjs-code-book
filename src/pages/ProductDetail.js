@@ -1,6 +1,7 @@
 import {useEffect, useState } from 'react';
 import Rating from "../components/Elements/Rating";
 import { useParams } from "react-router-dom";
+import useTitle from "../hooks/useTitle";
 
 const ProductDetail = () => {
     const [product, setProduct] = useState({});
@@ -27,6 +28,7 @@ const ProductDetail = () => {
         in_stock,
         long_description
     } = product
+    useTitle(name);
 
     return (
         <main>
