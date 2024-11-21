@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import './index.css';
 import App from './App';
 import { ScrollToTop } from "./components";
 import { FilterProvider } from "./context";
 import reportWebVitals from './reportWebVitals';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +16,7 @@ root.render(
       <Router>
           <FilterProvider>
               <ScrollToTop />
+              <ToastContainer closeButton={false} autoClose={2000} position={"top-right"}/>
               <App />
           </FilterProvider>
       </Router>

@@ -237,8 +237,19 @@
       "best_seller": true
     }
   ],
-  "orders": [
-  ],
+  "orders": [],
   "users": [
+    {
+      "email": "duongph.4a@gmail.com",
+      "password": "$2a$10$ahzUmXGhrJFCn6a2voHRMuX/MXcVOhY9nr8e2u0DvoIeMNkfd0NlW",
+      "name": "Duong",
+      "id": 1
+    },
+    {
+      "email": "eganpham.99@gmail.com",
+      "password": "$2a$10$X0C97Meat4oMr5tI.6vOoOS43/.UkrxnEsafCcFPqbjSg3arhrI/W",
+      "name": "Duong",
+      "id": 2
+    }
   ]
 }

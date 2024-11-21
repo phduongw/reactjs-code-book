@@ -24,8 +24,49 @@ export const FilterProvider = ({ children }) => {
         })
     }
 
+    function bestSeller(products) {
+        return state.bestSellerOnly ? products.filter(item => item.best_seller) : products;
+    }
+
+    function instock(products) {
+        return state.onlyInStock ? products.filter(item => item.in_stock) : products;
+    }
+
+    function sort(products) {
+        console.log("Call sort and State: ", state)
+        if (state.sortBy === "highToLow") {
+            return products.sort((a, b) => Number(a.price) - Number(b.price));
+        }
+
+        if (state.sortBy === "lowToHigh") {
+            return products.sort((a, b) => Number(b.price) - Number(a.price));
+        }
+
+        return products;
+    }
+
+    function rating(products) {
+        const ratings = state.ratings;
+        switch (ratings) {
+            case "4_STAR_ABOVE":
+                return products.filter(item => item.rating >= 4)
+            case "3_STAR_ABOVE":
+                return products.filter(item => item.rating >= 3)
+            case "2_STAR_ABOVE":
+                return products.filter(item => item.rating >= 2)
+            case "1_STAR_ABOVE":
+                return products.filter(item => item.rating >= 1)
+            default:
+                return products;
+        }
+    }
+
+    const filteredProductList = rating(sort(instock(bestSeller(state.productList))));
+
     const value = {
-        products: state.productList,
+        state,
+        dispatch,
+        products: filteredProductList,
         initialProductList
     };
 

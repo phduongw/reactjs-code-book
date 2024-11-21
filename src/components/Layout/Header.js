@@ -3,10 +3,15 @@ import {Link} from 'react-router-dom';
 
 import Logo from '../../assets/logo.png'
 import {Search} from "../Section/Search";
+import {DropdownLoggedOut} from "../Elements/DropdownLoggedOut";
+import {DropdownLoggedIn} from "../Elements/DropdownLoggedIn";
 
 export const Header = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [search, setSearch] = useState(false);
+    const [dropdown, setDropdown] = useState(false);
+    const token = JSON.parse(sessionStorage.getItem("accessToken"));
+    console.log("Token in Session Storage is: ", token);
     useEffect(() => {
         if (darkMode) {
             document.documentElement.classList.add('dark');
@@ -25,8 +30,7 @@ export const Header = () => {
                             className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">CodeBook</span>
                     </Link>
                     <div className="flex items-center">
-                        <span
-                            onClick={() => setDarkMode(!darkMode)}
+                        <span                            onClick={() => setDarkMode(!darkMode)}
                             className="cursor-pointer text-xl text-gray-700 dark:text-white mr-5 bi bi-gear-wide-connected"></span>
                         <span onClick={() => setSearch(!search)} className="cursor-pointer text-xl text-gray-700 dark:text-white mr-5 bi bi-search"></span>
                         <Link to="/cart">
@@ -35,10 +39,13 @@ export const Header = () => {
                             </span>
                         </Link>
                         <span
-                            className="cursor-pointer text-xl text-gray-700 dark:text-white mr-5 bi bi-person-circle"></span>
+                            className="cursor-pointer text-xl text-gray-700 dark:text-white mr-5 bi bi-person-circle"
+                            onClick={() => setDropdown(!dropdown)}
+                        ></span>
                     </div>
                 </div>
             </nav>
+            {dropdown && (token ? <DropdownLoggedIn /> : <DropdownLoggedOut />)}
             {search && <Search setSearch={setSearch}/>}
         </header>
     );
