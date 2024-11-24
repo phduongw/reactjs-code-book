@@ -33,10 +33,7 @@ const ProductDetail = () => {
     } = product
     useTitle(name);
     useEffect(() => {
-        console.log("Id is: ", id)
-        console.log("Cart List: ", cartList)
         const isExistInCart = cartList.find(item => item.id == id);
-        console.log("isExistInCart", isExistInCart)
 
         if (isExistInCart) {
             setReady(true);

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import DashboardEmpty from "./components/DashboardEmpty";
 import DashboardCard from "./components/DashboardCard";
+import { getUserOrders } from "../../services";
 
 const DashboardPage = () => {
     const [orders, setOrders] = useState([]);
@@ -8,20 +9,7 @@ const DashboardPage = () => {
     const token = JSON.parse(sessionStorage.getItem("accessToken"));
     const userId = JSON.parse(sessionStorage.getItem("useId"));
     useEffect(() => {
-        const fetchOrders = async () => {
-            const options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-
-            const response = await fetch(`http://localhost:1305/660/orders?${userId}`, options);
-            return await response.json();
-        }
-
-        fetchOrders()
+        getUserOrders()
             .then(data => {
                 console.log('data', data);
                 setOrders(data)
