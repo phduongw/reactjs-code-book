@@ -5,11 +5,13 @@ import Logo from '../../assets/logo.png'
 import {Search} from "../Section/Search";
 import {DropdownLoggedOut} from "../Elements/DropdownLoggedOut";
 import {DropdownLoggedIn} from "../Elements/DropdownLoggedIn";
+import {useCart} from "../../context";
 
 export const Header = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [search, setSearch] = useState(false);
     const [dropdown, setDropdown] = useState(false);
+    const { cartList } = useCart();
     const token = JSON.parse(sessionStorage.getItem("accessToken"));
     console.log("Token in Session Storage is: ", token);
     useEffect(() => {
@@ -24,7 +26,6 @@ export const Header = () => {
         if (dropdown) {
             setDropdown(false);
         }
-        console.log("Set Dropdown")
     }
 
     return (
@@ -51,7 +52,7 @@ export const Header = () => {
                         <Link onClick={offDropdown} to="/cart">
                             <span className="text-2xl bi bi-cart-fill relative mr-5">
                                 <span
-                                    className="text-white text-sm absolute -top-1 left-2.5 bg-rose-500 px-1 rounded-full">0</span>
+                                    className="text-white text-sm absolute -top-1 left-2.5 bg-rose-500 px-1 rounded-full">{cartList.length}</span>
                             </span>
                         </Link>
                         <span
@@ -60,7 +61,8 @@ export const Header = () => {
                         >
                             {dropdown && (token ? <DropdownLoggedIn setDropDown={setDropdown}/> : <DropdownLoggedOut/>)}
                         </span>
-                    </div>                </div>
+                    </div>
+                </div>
             </nav>
             {search && <Search setSearch={setSearch}/>}
         </header>

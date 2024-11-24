@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import Rating from "./Rating";
+import {useCart} from "../../context";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({product}) => {
+    const {addToCart, removeFromCart, cartList} = useCart();
+    const [isReady, setIsReady] = useState(false);
     const {
         id,
         name,
@@ -10,8 +13,23 @@ const ProductCard = ({ product }) => {
         rating,
         price,
         best_seller,
-        image_local
+        image_local,
+        in_stock
     } = product;
+
+    useEffect(() => {
+        const isExistInCart = cartList.find(item => item.id === id);
+        if (isExistInCart) {
+            setIsReady(true);
+        } else {
+            setIsReady(false);
+        }
+
+    }, [cartList, id]);
+
+    function handleClickCart() {
+        addToCart(product)
+    }
 
     return (
         <div
@@ -31,20 +49,28 @@ const ProductCard = ({ product }) => {
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{overview}</p>
 
                 <div className="flex items-center my-2">
-                    <Rating rating={rating} />
+                    <Rating rating={rating}/>
                 </div>
 
                 <p className="flex justify-between items-center">
                 <span className="text-2xl dark:text-gray-200">
                     <span>$</span><span>{price}</span>
                 </span>
-                    <button
-                        className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800"
-                    >
-                        Add To Cart
-                        <i className="ml-1 bi bi-plus-lg"></i>
-                    </button>
-                    {/* <button className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800">Remove Item <i className="ml-1 bi bi-trash3"></i></button> */}
+
+                    {isReady ? <button
+                            onClick={() => removeFromCart(product)}
+                            className={`inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 ${in_stock ? "" : "cursor-not-allowed"}`}
+                            disabled={in_stock ? "" : "disabled" }
+                        >
+                            Remove Item <i className="ml-1 bi bi-trash3"></i></button> :
+                        <button
+                            className={`inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 ${in_stock ? "" : "cursor-not-allowed"}`}
+                            disabled={in_stock ? "" : "disabled" }
+                            onClick={handleClickCart}
+                        >
+                            Add To Cart
+                            <i className="ml-1 bi bi-plus-lg"></i>
+                        </button>}
                 </p>
             </div>
         </div>

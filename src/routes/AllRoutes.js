@@ -1,22 +1,42 @@
-import { Routes, Route } from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 import {
     CartPage, HomePage,
     Login,
     ProductDetail,
     ProductsList,
-    Register
+    Register,
+    OrderPage, DashboardPage
 } from "../pages";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AllRoutes = () => {
     return (
         <>
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="products" element={<ProductsList />} />
-                <Route path="products/:id" element={<ProductDetail />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="cart" element={<CartPage />} />
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="products" element={<ProductsList/>}/>
+                <Route path="products/:id" element={<ProductDetail/>}/>
+                <Route path="login" element={<Login/>}/>
+                <Route path="register" element={<Register/>}/>
+                <Route
+                    path="cart"
+                    element={<ProtectedRoute>
+                        <CartPage/>
+                    </ProtectedRoute>}
+                />
+                <Route
+                    path="/order-sumary"
+                    element={<ProtectedRoute>
+                        <OrderPage/>
+                    </ProtectedRoute>}
+                />
+                <Route
+                    path="/dashboard"
+                    element={<ProtectedRoute>
+                        <DashboardPage />
+                    </ProtectedRoute>}
+                />
+                {/*<Route path="dashboard" element={ token ? <CartPage /> : <Navigate to="/login"/>} />*/}
             </Routes>
         </>
     );

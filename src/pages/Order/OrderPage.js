@@ -1,10 +1,15 @@
-import React from 'react';
+import { useLocation } from 'react-router-dom';
+
+import OrderSuccess from "./components/OrderSuccess";
+import OrderFail from "./components/OrderFail";
 
 const OrderPage = () => {
+    const { state } = useLocation();
+
     return (
-        <div>
-            Order Page
-        </div>
+        <main>
+            { state.status ? <OrderSuccess data={state.data} /> : <OrderFail /> }
+        </main>
     );
 };
 

@@ -1,6 +1,65 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { useNavigate } from "react-router-dom";
+import {useCart} from "../../../context";
 
 const Checkout = ({ setCheckout }) => {
+    const navigate = useNavigate();
+    const { total, cartList, clearCart } = useCart();
+    const [user, setUser] = useState({});
+    const userId = JSON.parse(sessionStorage.getItem("useId"));
+    const token = JSON.parse(sessionStorage.getItem("accessToken"));
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const order = {
+                cartList: cartList,
+                amount_paid: total,
+                quantity: cartList.length,
+                user: {
+                    name: user.name,
+                    email: user.email,
+                    id: user.id,
+                }
+            }
+
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(order)
+            }
+
+            const response = await fetch("http://localhost:1305/660/orders", options);
+            const data = await response.json();
+            clearCart();
+            navigate('/order-sumary', { state: {status: true, data: data} });
+        } catch (error) {
+            navigate('/order-sumary', { state: {status: false} });
+
+        }
+    }
+
+    useEffect(() => {
+        async function getUser() {
+
+            const options = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            }
+
+            const response = await fetch(`http://localhost:1305/600/users/${userId}`, options);
+            return await response.json();
+        }
+
+        getUser()
+            .then(data => setUser(data));
+    }, [token, userId]);
+
     return (
         <section>
             <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
@@ -24,13 +83,13 @@ const Checkout = ({ setCheckout }) => {
                             <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                                 <i className="bi bi-credit-card mr-2"></i>CARD PAYMENT
                             </h3>
-                            <form  className="space-y-6">
+                            <form  className="space-y-6" onSubmit={handleSubmit}>
                                 <div>
                                     <label htmlFor="name"
                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Name:</label>
                                     <input type="text" name="name" id="name"
                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white"
-                                           // value={user.name || "Undefined"}
+                                           value={user.name || "Undefined"}
                                            disabled required=""/>
                                 </div>
                                 <div>
@@ -38,7 +97,7 @@ const Checkout = ({ setCheckout }) => {
                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email:</label>
                                     <input type="text" name="email" id="email"
                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:value-gray-400 dark:text-white"
-                                           // value={user.email || "backup@example.com"}
+                                           value={user.email || "backup@example.com"}
                                            disabled required=""/>
                                 </div>
                                 <div>
@@ -69,7 +128,7 @@ const Checkout = ({ setCheckout }) => {
                                            value="523" disabled required=""/>
                                 </div>
                                 <p className="mb-4 text-2xl font-semibold text-lime-500 text-center">
-                                    {/*${total}*/}
+                                    ${total}
                                 </p>
                                 <button type="submit"
                                         className="w-full text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700">

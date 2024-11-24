@@ -1,25 +1,11 @@
 import CartCard from "./CartCard";
 import Checkout from "./Checkout";
 import {useState} from "react";
+import {useCart} from "../../../context";
 
 const CartList = () => {
-    const cartList = [
-        {
-            "id": 10015,
-            "name": "Kickstart Your UI Design Career",
-            "overview": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Error unde quisquam magni vel eligendi nam.",
-            "long_description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta aut, vel ipsum maxime quam quia, quaerat tempore minus odio exercitationem illum et eos, quas ipsa aperiam magnam officiis libero expedita quo voluptas deleniti sit dolore? Praesentium tempora cumque facere consectetur quia, molestiae quam, accusamus eius corrupti laudantium aliquid! Tempore laudantium unde labore voluptates repellat, dignissimos aperiam ad ipsum laborum recusandae voluptatem non dolore. Reiciendis cum quo illum. Dolorem, molestiae corporis.",
-            "price": 9,
-            "poster": "https://images.unsplash.com/photo-1587440871875-191322ee64b0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=650&q=40",
-            "image_local": "/assets/images/10015.avif",
-            "rating": 2,
-            "in_stock": false,
-            "size": 1,
-            "best_seller": false
-        }
-    ];
+    const {cartList, total} = useCart()
     const [checkout, setCheckout] = useState(false);
-    const total = cartList.length;
     return (
         <>
             <section>
