@@ -5,7 +5,7 @@ import {
     ProductDetail,
     ProductsList,
     Register,
-    OrderPage, DashboardPage
+    OrderPage, DashboardPage, PageNotFound
 } from "../pages";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -36,7 +36,10 @@ const AllRoutes = () => {
                         <DashboardPage />
                     </ProtectedRoute>}
                 />
-                {/*<Route path="dashboard" element={ token ? <CartPage /> : <Navigate to="/login"/>} />*/}
+                <Route
+                    path="*"
+                    element={<PageNotFound />}
+                />
             </Routes>
         </>
     );
